@@ -78,7 +78,7 @@ function App() {
           <Card.Text>
             {renderCardText(city)}
           </Card.Text>
-          <Button variant='primary' className='mt-auto' onClick={() => openMap([+city.latitude, +city.longitude], city)}>
+          <Button data-testid={`button-show-map-${city.name.replace(/\s/gi, "_").toLowerCase()}`} variant='primary' className='mt-auto' onClick={() => openMap([+city.latitude, +city.longitude], city)}>
             Show on map
           </Button>
         </Card.Body>
@@ -110,7 +110,7 @@ function App() {
 
         <Modal show={show} fullscreen={true} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>{city?.name}</Modal.Title>
+            <Modal.Title data-testid={`modal-title-${city?.name.replace(/\s/gi, "_").toLowerCase()}`}>{city?.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{ height: '80vh', width: '100wh' }}>
