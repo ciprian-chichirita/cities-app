@@ -1,3 +1,4 @@
+// import { SelectCallback } from './types';
 export interface City {
   continent: string;
   country: string;
@@ -12,4 +13,9 @@ export interface City {
 
 export interface Cities {
   cities: Array<City>;
+}
+
+export interface HeaderProps {
+  filterByContinentOptions: Array<string>;
+  onSelect: (eventKey: string | null, e: React.SyntheticEvent<unknown>) => void;
 }

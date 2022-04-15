@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import './App.css';
 import client from './api/api-client';
-import { Button, Card, Container, Modal, Nav, Navbar, NavDropdown, Row, Spinner } from 'react-bootstrap';
+import { Button, Card, Container, Modal, Row, Spinner } from 'react-bootstrap';
 import { Cities, City } from './models';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import L from 'leaflet';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
   const [cities, setCities] = useState<Array<City> | null>(null);
@@ -47,14 +50,6 @@ function App() {
     setShowModal(true);
     setMapPosition(position);
     setCity(city);
-  }
-
-  const renderDropDownOptions = (filterByContinentOptionsArr: Array<string>) => {
-    const dropDownOptions = filterByContinentOptionsArr.map((continent, pos) => {
-      return (<NavDropdown.Item key={`${continent.replace(/\s/g, '-')}_${pos}`} eventKey={continent}>{continent}</NavDropdown.Item>);
-    });
-    dropDownOptions.unshift(<NavDropdown.Item key={`all`} eventKey={'all'}>{'all'}</NavDropdown.Item>);
-    return dropDownOptions;
   }
 
   const renderCardText = (city:City|null, ommit:Array<string> = []) => {
@@ -102,48 +97,37 @@ function App() {
 
   return (
     <>
-      <Navbar bg='light' expand='lg'>
-        <Container>
-          <Navbar.Brand>Cities</Navbar.Brand>
-          <Navbar.Toggle aria-controls='basic-navbar-nav' />
-          <Navbar.Collapse className='justify-content-end' id='basic-navbar-nav'>
-            <Nav>
-              <NavDropdown title='Filter by Continent' id='basic-nav-dropdown' onSelect={filterEventHandler}>
-                {renderDropDownOptions(filterByContinentOptions)}
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
+      <Header
+        filterByContinentOptions={filterByContinentOptions}
+        onSelect={filterEventHandler}
+      />
+      <main>
+        <Container className='pt-4 pb-4'>
+          <Row xs={1} md={2} className='justify-content-center g-4 gap-3'>
+            {renderCards(cities)}
+          </Row>
         </Container>
-      </Navbar>
 
-      <Container className='pt-4 pb-4'>
-        <Row xs={1} md={2} className='justify-content-center g-4 gap-3'>
-          {renderCards(cities)}
-        </Row>
-      </Container>
-
-      <Modal show={show} fullscreen={true} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>{city?.name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{ height: '80vh', width: '100wh' }}>
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-            />
-            <Marker position={position} icon={markerIcon}>
-              <Popup>
+        <Modal show={show} fullscreen={true} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>{city?.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{ height: '80vh', width: '100wh' }}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              />
+              <Marker position={position} icon={markerIcon}>
+                <Popup>
                   {renderCardText(city, ['continent', 'population', 'landmarks'])}
-              </Popup>
-            </Marker>
-          </MapContainer>
-        </Modal.Body>
-      </Modal>
-
-      <footer className='page-footer font-small pt-4 pb-4 bg-light'>
-        <div className='footer-copyright text-center py-3'>© {new Date().getFullYear()}</div>
-      </footer>
+                </Popup>
+              </Marker>
+            </MapContainer>
+          </Modal.Body>
+        </Modal>
+      </main>
+      <Footer />
     </>
   );
 }
