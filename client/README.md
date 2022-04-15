@@ -6,10 +6,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm install --legacy-peer-deps`
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3030](http://localhost:3030) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
@@ -28,6 +29,18 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run typedoc`
+
+Builds app documentation inside `docs` folder.\
+To see documentation, navigate to `docs` folder and open `index.html` OR\
+Start a simple python server inside `docs` folder\
+Open [http://localhost:8000](http://localhost:8000) to view documentation
+
+example (starts a simple http server on port 8000):
+### `python3 -m http.server 8000`
+
+---
 
 ### `npm run eject`
 

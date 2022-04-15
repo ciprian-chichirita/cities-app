@@ -1,4 +1,10 @@
 //from https://kentcdodds.com/blog/replace-axios-with-a-simple-custom-fetch-wrapper
+/**
+ *
+ * @param endpoint:string, resource name
+ * @param configuration:RequestInit, fetc configuration
+ * @returns promise
+ */
 export const client = (endpoint : string, { body, ...customConfig }: RequestInit = {}) => {
   const headers = { 'content-type': 'application/json' };
 
